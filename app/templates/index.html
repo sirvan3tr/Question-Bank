@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              <span class="sr-only">Close</span>
+            </button>
+            <div class="modal-title" id="myModalLabel">
+              <div class="collapse" id="navbar-questions" aria-expanded="false" style="height: 0px;">
+                  <div class="inverse p-a">
+                    Number of questions: <span id="stats"></span>
+                    <form class="form-inline">
+                      <div class="form-group">
+                        Create me a test with
+                        <input style="width:60px"type="text" class="form-control form-control-sm" id="input_randomiser" placeholder="3">
+                        questions
+                      </div>
+                      <button id="btn_randomiser" type="button" class="btn btn-primary-outline btn-sm">Go</button>
+                      <button id="btn_reset" type="button" class="btn btn-link">reset...</button>
+                    </form>
+                  </div>
+                </div>
+              <div class="navbar navbar-default navbar-static-top">
+                  <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar-questions" aria-expanded="false">
+                    ☰ Questions
+                  </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div id="questions_con_questions" class=""></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+  </div>
+</div>
+    <div class="">
+      <h1 class="fl">Modules</h1>
+      <button onclick="newModule()" type="button" class="btn btn-primary-outline fr">new module</button>
+      <div class="clear"></div>
+    </div>
+
+    <hr>
+    <div class="list-group">
+    {% for module in modules %}
+      <a href="javascript:getChapters('{{ module.id }}');" class="amodule_{{module.id}} list-group-item">
+        <h4 class="list-group-item-heading">{{ module.name }}</h4>
+        <p class="list-group-item-text">ID: {{ module.id }}, Description: {{module.description}}</p>
+        <p><ul id="chapters_{{module.id}}" class="chapterlist"></ul></p>
+      </a>
+    {% endfor %}
+  </div>
+<script type="text/javascript">
+function newModule() {
+  var name = prompt("What is the new module name?");
+  if (name != null) {
+    var desc = prompt("Enter a brief description of your new module.");
+
+    if (desc != null) {
+      $.post('/newModule', {
+          modulename: name,
+          moduledesc: desc,
+      }).done(function(data) {
+        alert('Success');
+      }).fail(function(data) {
+        alert('an error has occured!');
+      });
+    } else {
+      alert('You must enter a module description');
+    }
+
+
+  } else {
+    alert('You must enter module name.');
+  }
+}
+function getChapters(moduleId) {
+    abutton = $('.amodule_'+moduleId);
+    if (!abutton.hasClass('loaded')) {
+      $.post('/getChapters', {
+          moduleId: moduleId,
+      }).done(function(data) {
+        abutton.addClass('loaded');
+        $.each( data.results, function( index, value ) {
+          var href = "javascript:getQuestions('"+value['id']+"')";
+          var html = '<li><a id="achapter_'+value['id']+'" href="'+href+'">'+value['name']+'</a></li>';
+          $('#chapters_'+moduleId).append(html);
+        });
+      }).fail(function(data) {
+        alert('an error has occured!');
+      });
+    }
+}
+function getQuestions(chapterId) {
+    //abutton = $('.amodule_'+moduleId);
+    //if (!abutton.hasClass('loaded')) {
+      $.post('/getQuestions', {
+          chapterId: chapterId,
+      }).done(function(data) {
+        //abutton.addClass('loaded');
+        $('#questions_con_questions').html('');
+        var count = 0;
+        $.each( data.results, function( index, value ) {
+          var html = '<div class="individualquestion">'+value['question']+'</div>';
+          $('#myModal').modal('show');
+          $('#questions_con_questions').append(html);
+          ++count;
+        });
+
+        $('#stats').html(count);
+      }).fail(function(data) {
+        alert('an error has occured!');
+      });
+    //}
+}
+$('#btn_reset').click(function() {
+
+});
+$('#btn_randomiser').click(function (e) {
+  var limit = $('#input_randomiser').val(),
+      lower_bound = 1,
+      upper_bound = $("#questions_con_questions > div").length,
+      unique_random_numbers = [],
+      maxquestions = $("#questions_con_questions > div").length;
+  if (limit > maxquestions) {
+    alert('Error, maximum random of questions available are '+maxquestions)
+  } else {
+    while (unique_random_numbers.length < limit) {
+        var random_number = Math.round(Math.random()*(upper_bound - lower_bound) + lower_bound);
+        if (unique_random_numbers.indexOf(random_number) == -1) {
+            unique_random_numbers.push( random_number );
+        }
+    }
+    var el = [];
+    for (var i = 0; i < unique_random_numbers.length; i++) {
+      el.push($("#questions_con_questions div:nth-child("+unique_random_numbers[i]+")").html());
+    }
+    $('#questions_con_questions').html('');
+    for (var i = 0; i < el.length; i++) {
+      var html = '<div class="individualquestion">'+el[i]+'</div>';
+      $('#questions_con_questions').append(html);
+    }
+  }
+
+})
+</script>
+{% endblock %}

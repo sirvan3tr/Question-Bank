@@ -1,0 +1,50 @@
+body {
+
+}
+/* General
+======================================== */
+.clear {
+  clear: both;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+/* other...
+======================================== */
+.module_con {
+    border-bottom: 1px solid #E57373;
+    padding: 10px;
+}
+.module_con h5 {
+  color: #E57373;
+}
+.module_avatar {
+
+  float: left;
+  margin: 0 20px 0 0;
+}
+.module_content {
+  float: left;
+}
+
+h1.quote {
+  font-size: 24px;
+  text-align: center;
+  font-family: garamond;
+  line-height: 21px;
+}
+.individualquestion {
+    font-size: 1.5em;
+    text-align: center;
+    padding: 40px 0px;
+    margin: 0px 91px;
+    line-height: 24px;
+    font-family: Garamond;
+    border-bottom: 1px solid #ccc;
+}
+a.list-group-item .list-group-item-heading, button.list-group-item .list-group-item-heading {
+    color: #0275d8;
+}
