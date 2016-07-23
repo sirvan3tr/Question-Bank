@@ -62,7 +62,7 @@ function newModule() {
     var desc = prompt("Enter a brief description of your new module.");
 
     if (desc != null) {
-      $.post('/newModule', {
+      $.post('/test', {
           modulename: name,
           moduledesc: desc,
       }).done(function(data) {

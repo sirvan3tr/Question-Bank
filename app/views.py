@@ -1,8 +1,11 @@
 from flask import render_template, flash, redirect, jsonify, request
 import requests, json, ystockquote
 from app import app
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from .forms import LoginForm
 from .models import Module, Chapter, Question
+from config import SQLALCHEMY_DATABASE_URI
 
 # index view function suppressed for brevity
 @app.route('/')
@@ -47,6 +50,19 @@ def newModule():
     db.execute('insert into entries (name, description) values (?, ?)',
                  [request.form['modulename'], request.form['moduledesc']])
     db.commit()
+
+@app.route('/test', methods=['POST'])
+def test():
+    engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
+
+    # Create a Session
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    mod = Module(name=request.form['modulename'], description=request.form['moduledesc'])
+    session.add(mod)
+    session.commit()
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
