@@ -42,13 +42,10 @@ h1.quote {
   line-height: 21px;
 }
 .individualquestion {
-    font-size: 1.1em;
-    text-align: center;
-    padding: 40px 0px;
+    padding: 10px 0px;
     margin: 0px 91px;
     line-height: 24px;
-    font-family: Garamond;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px dashed #ccc;
 }
 .list-group-item {
   padding:0.5rem 0.5rem;

@@ -69,6 +69,18 @@ def newChapter():
     session.add(chapter)
     session.commit()
 
+@app.route('/newQuestion', methods=['POST'])
+def newQuestion():
+    engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
+
+    # Create a Session
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    question = Question(chapter_id=request.form['chapterId'], question=request.form['questionname'])
+    session.add(question)
+    session.commit()
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()

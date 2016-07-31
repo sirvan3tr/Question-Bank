@@ -50,8 +50,8 @@
     {% for module in modules %}
       <a href="javascript:getChapters('{{ module.id }}');" class="amodule_{{module.id}} list-group-item">
         <h4 class="list-group-item-heading fl">{{ module.name }}</h4>
-        <button class="miniAction deleteModule fr">Delete</button>
-        <button onclick="newChapter('{{ module.id }}')" class="miniAction newChapter fr">New chapter</button>
+        <button class="miniAction deleteModule fr btn btn-link" type="button">Delete</button>
+        <button onclick="newChapter('{{ module.id }}')" class="miniAction newChapter btn btn-link fr" type="button">New chapter</button>
         <div class="clear"></div>
         <p class="list-group-item-text">ID: {{ module.id }}, Description: {{module.description}}</p>
         <ul id="chapters_{{module.id}}" class="chapterlist"></ul>
@@ -88,8 +88,10 @@ function getChapters(moduleId) {
       }).done(function(data) {
         abutton.addClass('loaded');
         $.each( data.results, function( index, value ) {
-          var href = "javascript:getQuestions('"+value['id']+"')";
-          var html = '<li><a id="achapter_'+value['id']+'" href="'+href+'">'+value['name']+'</a></li>';
+          var href = "javascript:getQuestions('"+value['id']+"')",
+              newQhref = "javascript:newQuestion('"+value['id']+"')",
+              newQuestion = '<a href="'+newQhref+'" class="newQuestionlow">New question</a>';
+          var html = '<li><a id="achapter_'+value['id']+'" href="'+href+'">'+value['name']+'</a> - '+newQuestion+'</li>';
           $('#chapters_'+moduleId).append(html);
         });
       }).fail(function(data) {
@@ -104,6 +106,9 @@ function getQuestions(chapterId) {
           chapterId: chapterId,
       }).done(function(data) {
         //abutton.addClass('loaded');
+        if (data.results.length == 0 ) {
+          newQuestion(chapterId);
+        }
         $('#questions_con_questions').html('');
         var count = 0;
         $.each( data.results, function( index, value ) {
@@ -118,6 +123,20 @@ function getQuestions(chapterId) {
         alert('an error has occured!');
       });
     //}
+}
+
+function newQuestion(chapterId) {
+  var questionname = prompt("Enter your question...");
+  if (questionname != null) {
+    $.post('/newQuestion', {
+        chapterId: chapterId,
+        questionname: questionname,
+    }).done(function(data) {
+      alert('Success');
+    }).fail(function(data) {
+      alert('An error has occured!');
+    });
+  }
 }
 
 // Posts a new chapter for a given module
