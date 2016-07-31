@@ -1,5 +1,6 @@
 body {
-
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 0.8em;
 }
 /* General
 ======================================== */
@@ -11,6 +12,9 @@ body {
 }
 .fr {
   float: right;
+}
+ul {
+  margin-bottom: 0;
 }
 /* other...
 ======================================== */
@@ -29,7 +33,8 @@ body {
 .module_content {
   float: left;
 }
-
+/* Homepage list of questions
+======================================== */
 h1.quote {
   font-size: 24px;
   text-align: center;
@@ -37,7 +42,7 @@ h1.quote {
   line-height: 21px;
 }
 .individualquestion {
-    font-size: 1.5em;
+    font-size: 1.1em;
     text-align: center;
     padding: 40px 0px;
     margin: 0px 91px;
@@ -45,6 +50,18 @@ h1.quote {
     font-family: Garamond;
     border-bottom: 1px solid #ccc;
 }
+.list-group-item {
+  padding:0.5rem 0.5rem;
+}
+h4.list-group-item-heading {
+  font-size:1.2em;
+}
 a.list-group-item .list-group-item-heading, button.list-group-item .list-group-item-heading {
     color: #0275d8;
+}
+.miniAction {
+  font-size:0.75em;
+}
+.miniAction:hover {
+  text-decoration: underline;
 }

@@ -47,12 +47,6 @@ def getQuestions():
 
 @app.route('/newModule', methods=['POST'])
 def newModule():
-    db.execute('insert into entries (name, description) values (?, ?)',
-                 [request.form['modulename'], request.form['moduledesc']])
-    db.commit()
-
-@app.route('/test', methods=['POST'])
-def test():
     engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
 
     # Create a Session
@@ -63,6 +57,17 @@ def test():
     session.add(mod)
     session.commit()
 
+@app.route('/newChapter', methods=['POST'])
+def newChapter():
+    engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
+
+    # Create a Session
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    chapter = Chapter(module_id=request.form['moduleID'], name=request.form['chaptername'])
+    session.add(chapter)
+    session.commit()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

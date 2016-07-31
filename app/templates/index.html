@@ -49,9 +49,12 @@
     <div class="list-group">
     {% for module in modules %}
       <a href="javascript:getChapters('{{ module.id }}');" class="amodule_{{module.id}} list-group-item">
-        <h4 class="list-group-item-heading">{{ module.name }}</h4>
+        <h4 class="list-group-item-heading fl">{{ module.name }}</h4>
+        <button class="miniAction deleteModule fr">Delete</button>
+        <button onclick="newChapter('{{ module.id }}')" class="miniAction newChapter fr">New chapter</button>
+        <div class="clear"></div>
         <p class="list-group-item-text">ID: {{ module.id }}, Description: {{module.description}}</p>
-        <p><ul id="chapters_{{module.id}}" class="chapterlist"></ul></p>
+        <ul id="chapters_{{module.id}}" class="chapterlist"></ul>
       </a>
     {% endfor %}
   </div>
@@ -62,7 +65,7 @@ function newModule() {
     var desc = prompt("Enter a brief description of your new module.");
 
     if (desc != null) {
-      $.post('/test', {
+      $.post('/newModule', {
           modulename: name,
           moduledesc: desc,
       }).done(function(data) {
@@ -73,8 +76,6 @@ function newModule() {
     } else {
       alert('You must enter a module description');
     }
-
-
   } else {
     alert('You must enter module name.');
   }
@@ -118,6 +119,23 @@ function getQuestions(chapterId) {
       });
     //}
 }
+
+// Posts a new chapter for a given module
+function newChapter(moduleID) {
+  var chaptername = prompt("Enter chapter name");
+  if (chaptername != null) {
+    $.post('/newChapter', {
+        moduleID: moduleID,
+        chaptername: chaptername,
+    }).done(function(data) {
+      alert('Success');
+    }).fail(function(data) {
+      alert('An error has occured!');
+    });
+  }
+}
+
+// -----
 $('#btn_reset').click(function() {
 
 });
