@@ -33,13 +33,16 @@ ul {
 .module_content {
   float: left;
 }
+.top_gutter {
+  margin-top: 10px;
+}
 /* Homepage list of questions
 ======================================== */
 h1.quote {
   font-size: 24px;
   text-align: center;
-  font-family: garamond;
   line-height: 21px;
+  color: #5bc0de;
 }
 .individualquestion {
     padding: 10px 0px;
@@ -61,4 +64,24 @@ a.list-group-item .list-group-item-heading, button.list-group-item .list-group-i
 }
 .miniAction:hover {
   text-decoration: underline;
+}
+/* Homepage tracker
+======================================== */
+.tracker_element {
+  width: 10rem;
+  height: 7em;
+  display: block;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 0 10px 10px 0;
+  float: left;
+  border: 1px solid #0275d8;
+  color: #0275d8;
+}
+.tracker_element .te_hours {
+  font-size: 2em;
+  font-weight: bold;
+  border-radius: 30px;
+  background-color: #fff;
 }

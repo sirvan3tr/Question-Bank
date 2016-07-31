@@ -39,7 +39,26 @@
         </div>
   </div>
 </div>
-    <div class="">
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#daily_goals_tab" role="tab">Daily goals</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#questions_tab" role="tab">Questions</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#hours_tracker_tab" role="tab">Hours tracker</a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="daily_goals_tab" role="tabpanel">
+
+  </div>
+  <div class="tab-pane" id="questions_tab" role="tabpanel">
+    <div class="top_gutter">
       <h1 class="fl">Modules</h1>
       <button onclick="newModule()" type="button" class="btn btn-primary-outline fr">new module</button>
       <div class="clear"></div>
@@ -53,11 +72,23 @@
         <button class="miniAction deleteModule fr btn btn-link" type="button">Delete</button>
         <button onclick="newChapter('{{ module.id }}')" class="miniAction newChapter btn btn-link fr" type="button">New chapter</button>
         <div class="clear"></div>
-        <p class="list-group-item-text">ID: {{ module.id }}, Description: {{module.description}}</p>
+        <p class="list-group-item-text">{{module.description}}</p>
         <ul id="chapters_{{module.id}}" class="chapterlist"></ul>
       </a>
     {% endfor %}
+    </div>
   </div>
+  <div class="tab-pane" id="hours_tracker_tab" role="tabpanel">
+    <h3 class="top_gutter">Hours tracker</h3>
+    {% for module in modules %}
+    <div class="tracker_element">
+      <div class="te_hours">10,000</div>
+      <div class="te_caption">{{ module.name }}</div>
+    </div>
+    {% endfor %}
+    <div class="clear"></div>
+  </div>
+</div>
 <script type="text/javascript">
 function newModule() {
   var name = prompt("What is the new module name?");
